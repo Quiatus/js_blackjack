@@ -89,8 +89,15 @@ function playerWin() {
 // If player decides to stand (i.e score is less than 21), the house will start drawing cards.
 
 function stand() {
-    disablePlayBtn();
-    houseDraw();
+    let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
+    let playTotal = parseInt(document.getElementById('playTotal').textContent);
+
+    if (houseTotal >= playTotal) {
+        playerLost();
+    } else {
+        disablePlayBtn();
+        houseDraw();
+    }
 }
 
 // Initial draw of two cards for player and house.
@@ -204,17 +211,20 @@ function playCard() {
     }
 }
 
+
+
 // House draws a card.
 
 function houseDraw() {
     let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
     let playTotal = parseInt(document.getElementById('playTotal').textContent);
-    let houseHand = document.getElementById('houseHand').textContent;
 
     while (houseTotal < playTotal) {
 
-        card = drawnCard(houseTotal);
+        let houseHand = document.getElementById('houseHand').textContent;
+        let card = drawnCard(houseTotal);
         houseTotal += card;
+
         document.getElementById('houseHand').textContent = houseHand + ' - ' + card;
         document.getElementById('houseTotal').textContent = houseTotal;
 
@@ -224,7 +234,7 @@ function houseDraw() {
         } else if (houseTotal > 21) {
             playerWin();
             break;
-        }         
+        } 
     }
 }
 
