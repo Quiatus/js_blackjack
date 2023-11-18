@@ -3,6 +3,8 @@ const btnDraw = document.getElementById('btnDraw');
 const btnStand = document.getElementById('btnStand');
 const result = document.getElementById('result');
 
+const houseTimer = 1000;
+
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
 
 function drawnCard(total) {
@@ -96,7 +98,7 @@ function stand() {
         playerLost();
     } else {
         disablePlayBtn();
-        houseDraw();
+        setTimeout(() => {houseDraw()}, houseTimer);
     }
 }
 
@@ -211,31 +213,35 @@ function playCard() {
     }
 }
 
-
-
 // House draws a card.
 
 function houseDraw() {
     let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
     let playTotal = parseInt(document.getElementById('playTotal').textContent);
 
-    while (houseTotal < playTotal) {
+    // Adds timer for the house draws to add suspence
+    
+    function iter(){
+        if (houseTotal < playTotal) {
 
-        let houseHand = document.getElementById('houseHand').textContent;
-        let card = drawnCard(houseTotal);
-        houseTotal += card;
+            setTimeout(iter, houseTimer);
 
-        document.getElementById('houseHand').textContent = houseHand + ' - ' + card;
-        document.getElementById('houseTotal').textContent = houseTotal;
-
-        if ((houseTotal <= 21) && (houseTotal >= playTotal)) {
-            playerLost();
-            break;
-        } else if (houseTotal > 21) {
-            playerWin();
-            break;
-        } 
+            let houseHand = document.getElementById('houseHand').textContent;
+            let card = drawnCard(houseTotal);
+            houseTotal += card;
+    
+            document.getElementById('houseHand').textContent = houseHand + ' - ' + card;
+            document.getElementById('houseTotal').textContent = houseTotal;
+    
+            if ((houseTotal <= 21) && (houseTotal >= playTotal)) {
+                playerLost();
+            } else if (houseTotal > 21) {
+                playerWin();
+            } 
+        }
     }
+
+    iter();
 }
 
 btnBet.addEventListener('click', placeBet);
