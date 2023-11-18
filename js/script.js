@@ -128,9 +128,9 @@ function initDraw() {
     }
 
     if (totalHouse === 21) {
-        playerWin();
-    } else if (totalPlayer === 21) {
         playerLost();
+    } else if (totalPlayer === 21) {
+        playerWin();
     } 
 
     document.getElementById('playHand').textContent = playHand;
@@ -209,11 +209,22 @@ function playCard() {
 function houseDraw() {
     let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
     let playTotal = parseInt(document.getElementById('playTotal').textContent);
+    let houseHand = document.getElementById('houseHand').textContent;
 
-    if (houseTotal >= playTotal) {
-        playerLost();
-    } else if (houseTotal < playTotal) {
-        playerWin();
+    while (houseTotal < playTotal) {
+
+        card = drawnCard(houseTotal);
+        houseTotal += card;
+        document.getElementById('houseHand').textContent = houseHand + ' - ' + card;
+        document.getElementById('houseTotal').textContent = houseTotal;
+
+        if ((houseTotal <= 21) && (houseTotal >= playTotal)) {
+            playerLost();
+            break;
+        } else if (houseTotal > 21) {
+            playerWin();
+            break;
+        }         
     }
 }
 
