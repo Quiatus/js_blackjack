@@ -19,7 +19,9 @@ img {
 
     --BGCOLOR: #121;
     --COLOR-GOLD: goldenrod;
+    --COLOR-BRIGHTGOLD: gold;
     --COLOR-WHITE: whitesmoke;
+    --BTN-BGCOLOR: #204020;
 
     /* Border */
 
@@ -99,7 +101,7 @@ h1 {
 }
 
 input, button {
-    background-color: var(--BGCOLOR);
+    background-color: var(--BTN-BGCOLOR);
     font: inherit;
     font-size: 0.7rem;
     padding: 0 0.2rem;
@@ -118,15 +120,17 @@ input {
 .button {
     color: var(--COLOR-GOLD);
     border: var(--BORDER);
+    box-shadow: 1px 1px 1px var(--COLOR-BRIGHTGOLD);
 }
 
 .button:hover {
-    border-color: gold;
-    color: gold;
+    border-color: var(--COLOR-BRIGHTGOLD);
+    color: var(--COLOR-BRIGHTGOLD);
 }
 
 .button:active {
-    transform: scale(0.95);
+    transform: translate(1px, 1px);
+    box-shadow: none;
 }
 
 .buttonDisabled {
