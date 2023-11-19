@@ -5,6 +5,23 @@ const result = document.getElementById('result');
 
 const houseTimer = 1000;
 
+const deck = [
+    {value: 11, face: "🂡"}, {value: 11, face: "🂱"}, {value: 11, face: "🃁"}, {value: 11, face: "🃑"}, 
+    {value: 2, face: "🂢"}, {value: 2, face: "🂲"}, {value: 2, face: "🃂"}, {value: 2, face: "🃒"}, 
+    {value: 3, face: "🂣"}, {value: 3, face: "🂳"}, {value: 3, face: "🃃"}, {value: 3, face: "🃓"}, 
+    {value: 4, face: "🂤"}, {value: 4, face: "🂴"}, {value: 4, face: "🃄"}, {value: 4, face: "🃔"}, 
+    {value: 5, face: "🂥"}, {value: 5, face: "🂵"}, {value: 5, face: "🃅"}, {value: 5, face: "🃕"}, 
+    {value: 6, face: "🂦"}, {value: 6, face: "🂶"}, {value: 6, face: "🃆"}, {value: 6, face: "🃖"}, 
+    {value: 7, face: "🂧"}, {value: 7, face: "🂷"}, {value: 7, face: "🃇"}, {value: 7, face: "🃗"}, 
+    {value: 8, face: "🂨"}, {value: 8, face: "🂸"}, {value: 8, face: "🃈"}, {value: 8, face: "🃘"}, 
+    {value: 9, face: "🂩"}, {value: 9, face: "🂹"}, {value: 9, face: "🃉"}, {value: 9, face: "🃙"}, 
+    {value: 10, face: "🂪"}, {value: 10, face: "🂺"}, {value: 10, face: "🃊"}, {value: 10, face: "🃚"}, 
+    {value: 10, face: "🂫"}, {value: 10, face: "🂻"}, {value: 10, face: "🃋"}, {value: 10, face: "🃛"}, 
+    {value: 10, face: "🂬"}, {value: 10, face: "🂼"}, {value: 10, face: "🃌"}, {value: 10, face: "🃜"}, 
+    {value: 10, face: "🂭"}, {value: 10, face: "🂽"}, {value: 10, face: "🃍"}, {value: 10, face: "🃝"}, 
+    {value: 10, face: "🂮"}, {value: 10, face: "🂾"}, {value: 10, face: "🃎"}, {value: 10, face: "🃞"}
+];
+
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
 
 function drawnCard(total) {
@@ -22,9 +39,9 @@ function drawnCard(total) {
 function redMessage(errNum) {
     let errors = [
         "GAME OVER! No more funds!",
-        "You lost the round!",
+        "You have lost the round!",
         "You do not have enough money!",
-        "You must bet at least 1!",
+        "You must bet at least 1$!",
         "Please enter a number!"
     ];
 
@@ -77,7 +94,7 @@ function playerWin() {
     result.classList.add('green');
 
     document.getElementById('bet').textContent = 0;
-    document.getElementById('result').textContent = 'YOU WON!';
+    document.getElementById('result').textContent = 'YOU HAVE WON!';
 
     disablePlayBtn();
 
@@ -121,7 +138,7 @@ function initDraw() {
             case 1:
                 card = drawnCard(totalPlayer);
                 totalPlayer += card;
-                playHand = playHand + ' - ' + card;
+                playHand = playHand + '-' + card;
                 break;
             case 2:
                 card = drawnCard(totalHouse);
@@ -131,7 +148,7 @@ function initDraw() {
             case 3:
                 card = drawnCard(totalHouse);
                 totalHouse += card;
-                houseHand = houseHand + ' - ' + card;
+                houseHand = houseHand + '-' + card;
                 break;
         }
     }
@@ -164,7 +181,7 @@ function placeBet() {
         result.classList.remove('red', 'green');
         result.classList.add('white');
 
-        document.getElementById('betAmnt').value = 0;
+        document.getElementById('betAmnt').value = "";
         document.getElementById('result').textContent = 'Draw a card or stand.';
 
         btnBet.classList.remove('button');
@@ -190,7 +207,7 @@ function placeBet() {
         redMessage(3);
     } else {
         redMessage(4);
-        document.getElementById('betAmnt').value = 0;
+        document.getElementById('betAmnt').value = "";
     }
 }
 
@@ -203,7 +220,7 @@ function playCard() {
     card = drawnCard(totalPlayer);
     totalPlayer += card;
 
-    document.getElementById('playHand').textContent = playHand + ' - ' + card;
+    document.getElementById('playHand').textContent = playHand + '-' + card;
     document.getElementById('playTotal').textContent = totalPlayer;
 
     if (totalPlayer > 21) {
@@ -230,7 +247,7 @@ function houseDraw() {
             let card = drawnCard(houseTotal);
             houseTotal += card;
     
-            document.getElementById('houseHand').textContent = houseHand + ' - ' + card;
+            document.getElementById('houseHand').textContent = houseHand + '-' + card;
             document.getElementById('houseTotal').textContent = houseTotal;
     
             if ((houseTotal <= 21) && (houseTotal >= playTotal)) {
