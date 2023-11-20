@@ -96,29 +96,20 @@ function drawCard(player) {
 
 function playMessage(msgNum) {
     let messages = [
-        "GAME OVER! Not enough funds to play!",        
-        "You have lost the round!",         
-        "You do not have enough funds!",
-        "You must bet at least 5$!",
-        "Please enter a number!",
-        "You have surrendered!",
-        "YOU HAVE WON!",
-        "STAND OFF!",
-        "Draw a card or stand!",
-        "Dealer's turn!"
-    ];
+        {color: "red", text: "GAME OVER! Not enough funds to play!"},
+        {color: "red", text: "You have lost the round!"},
+        {color: "red", text: "You do not have enough funds!"},
+        {color: "red", text: "You must bet at least 5$!"},
+        {color: "red", text: "Please enter a number!"},
+        {color: "red", text: "You have surrendered!"},
+        {color: "green", text: "YOU HAVE WON!"},
+        {color: "white", text: "STAND OFF!"},
+        {color: "white", text: "Draw a card or stand!"},
+        {color: "white", text: "Dealer's turn!"},];
 
     result.classList.remove('white', 'green', 'red');
-
-    if (msgNum < 6) {
-        result.classList.add('red');
-    } else if (msgNum === 6) {
-        result.classList.add('green');
-    } else if (msgNum > 6) {
-        result.classList.add('white');
-    }
-
-    document.getElementById('result').textContent = messages[msgNum];
+    result.classList.add(messages[msgNum].color);
+    result.textContent = messages[msgNum].text;
 }
 
 function changeBankText(ban,be){
