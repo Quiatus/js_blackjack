@@ -1,4 +1,5 @@
 const btnBet = document.getElementById('btnBet');
+const btnAllIn = document.getElementById('btnAllIn');
 const btnDraw = document.getElementById('btnDraw');
 const btnStand = document.getElementById('btnStand');
 const btnSurrender = document.getElementById('btnSurrender');
@@ -95,10 +96,10 @@ function drawCard(player) {
 
 function playMessage(msgNum) {
     let messages = [
-        "GAME OVER! No more funds!",        
+        "GAME OVER! Not enough funds to play!",        
         "You have lost the round!",         
-        "You do not have enough money!",
-        "You must bet at least 1$!",
+        "You do not have enough funds!",
+        "You must bet at least 5$!",
         "Please enter a number!",
         "You have surrendered!",
         "YOU HAVE WON!",
@@ -162,10 +163,18 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
         btnBet.classList.remove('buttonDisabled');
         btnBet.classList.add('button');
         btnBet.addEventListener('click',placeBet);
+
+        btnAllIn.classList.remove('buttonDisabled');
+        btnAllIn.classList.add('button');
+        btnAllIn.addEventListener('click',allIn);
     } else {
         btnBet.classList.remove('button');
         btnBet.classList.add('buttonDisabled');
         btnBet.removeEventListener('click',placeBet);
+
+        btnAllIn.classList.remove('button');
+        btnAllIn.classList.add('buttonDisabled');
+        btnAllIn.removeEventListener('click',allIn);
     }
 }
 
@@ -175,7 +184,7 @@ function playerLost() {
     changeBankText(bank,0);
     playerStats(2);
 
-    if (bank === 0) {
+    if (bank < 5) {
         playMessage(0);
         disablePlayBtn(false,false,false,false);
     } else {
@@ -246,26 +255,39 @@ function initDraw() {
 function placeBet() {
     let betAmnt = parseInt(document.getElementById('betAmnt').value);
 
-    if ((betAmnt > 0) && (betAmnt <= bank)) {
-        document.getElementById('betAmnt').value = "";
-        bet = betAmnt;
-        bank = bank - bet;
-        
-        playMessage(8);
-        changeBankText(bank,bet);
-        disablePlayBtn(true,true,true,false);
-        initDraw();
-    } else if (betAmnt > bank) {
-        playMessage(2);
-        document.getElementById('betAmnt').value = bank;
-    } else if (betAmnt < 0) {
-        document.getElementById('betAmnt').value = 0;
-    } else if (betAmnt === 0) {
-        playMessage(3);
-    } else {
-        playMessage(4);
-        document.getElementById('betAmnt').value = "";
-    }
+        if ((betAmnt >= 5) && (betAmnt <= bank)) {
+            document.getElementById('betAmnt').value = "";
+            bet = betAmnt;
+            bank = bank - bet;
+            
+            playMessage(8);
+            changeBankText(bank,bet);
+            disablePlayBtn(true,true,true,false);
+            initDraw();
+        } else if (betAmnt > bank) {
+            playMessage(2);
+            document.getElementById('betAmnt').value = bank;
+        } else if (betAmnt < 0) {
+            document.getElementById('betAmnt').value = 0;
+        } else if ((betAmnt >= 0) && (betAmnt < 5)) {
+            playMessage(3);
+            document.getElementById('betAmnt').value = 5;
+        } else {
+            playMessage(4);
+            document.getElementById('betAmnt').value = "";
+        }
+}
+
+// All in 
+
+function allIn() {
+    bet = bank;
+    bank = 0;
+            
+    playMessage(8);
+    changeBankText(bank,bet);
+    disablePlayBtn(true,true,true,false);
+    initDraw();
 }
 
 // Player draws a card. 

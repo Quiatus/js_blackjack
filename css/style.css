@@ -22,14 +22,23 @@ img {
     --COLOR-BRIGHTGOLD: gold;
     --COLOR-WHITE: whitesmoke;
     --BTN-BGCOLOR: #203520;
+    --COLOR-GREY: #808080;
+    --COLOR-RED: #F22;
+    --COLOR-GREEN: greenyellow;
 
     /* Border */
 
     --BORDER: 1px solid var(--COLOR-GOLD);
+    --BORDER-DOUBLE: 5px double var(--COLOR-GOLD);
 
     /* Shadow */
 
     --TEXT-SHADOW: 2px 2px 3px #000;
+
+    /* Sizing */
+
+    --WIDTH: 750px;
+    --PADDING: 0.5rem 1rem;
 }
 
 /* General */
@@ -43,77 +52,62 @@ body {
     background-color: var(--BGCOLOR);
 }
 
-.cards {
-    font-size: 5rem;
-    letter-spacing: 0.25rem;
-    line-height: 0.95;
-    color: var(--COLOR-WHITE);
-}
-
 /* Main */
 
-main {
-    width: 750px;
-    height:515px;
+.main {
+    width: var(--WIDTH);
+    /* height:515px; */
     background-image: url(../media/back.png);
     background-size: cover;
-    margin: 0 auto;
+    margin: 1rem auto;
     border: 5px double var(--COLOR-GOLD);
-    padding: 0 1rem;
+    border-radius: 10px;
     color: var(--COLOR-WHITE);
 }
 
-.h1 {
+/* Header */
+
+.div__h1 {
     font-family: 'Rye', serif;
     color: var(--COLOR-GOLD);
-    max-width: fit-content;
-    margin: 1rem auto 0;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 3px #000;
-    letter-spacing: 0.3em;
-    background-image: url(../media/back.png);
-    padding: 0 2rem;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border: 5px double var(--COLOR-GOLD);
-    border-bottom: none;
+    font-size: 1.5rem;
+    text-shadow: var(--TEXT-SHADOW);
+    letter-spacing: 0.5em;
+    text-align: center;
+    border-bottom: var(--BORDER-DOUBLE);
 }
 
 /* Game stats */
 
 .stats {
-    width: 750px;
-    background-image: url(../media/back.png);
-    background-size: cover;
-    margin: 0 auto;
     color: var(--COLOR-WHITE);
-    border: 5px double var(--COLOR-GOLD);
-    border-bottom: none;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-bottom: var(--BORDER-DOUBLE);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: var(--PADDING);
 }
 
 /* Playarea */
 
+.playarea {
+    padding: var(--PADDING);
+}
+
 .playarea__header {
     text-align: center;
-    width: 100%;
-    border-bottom: 1px solid var(--COLOR-GOLD);
-    font-size: 1.2rem;
+    border-bottom: var(--BORDER);
+    font-size: 1.25rem;
     text-shadow: var(--TEXT-SHADOW);
-    padding: 0.5rem 0;
+    padding-bottom: 0.5em;
 }
 
 .playarea__controls {
     display: flex;
-    justify-content: space-evenly;
-    padding-top: 0.8rem;
-    margin-top: 0.8rem;
-    border-top: 1px solid var(--COLOR-GOLD);
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: var(--BORDER);
 }
 
 .playarea__deck {
@@ -122,7 +116,7 @@ main {
     border-radius: 5px;
     display: flex;
     flex-flow: row nowrap;
-    padding: 5px 2px;
+    padding: 5px;
 }
 
 .playarea__controls button {
@@ -133,7 +127,7 @@ main {
 .playarea__score {
     display: flex;
     justify-content: space-between;
-    padding: 0 3rem 0 2rem; 
+    padding-right: 80%;
     font-size: 1.2rem;
     margin-top: 0.5rem;
 }
@@ -141,33 +135,27 @@ main {
 /* Player Bank styles */
 
 .playerBank {
-    width: 750px;
-    background-image: url(../media/back.png);
-    background-size: cover;
-    margin: 0 auto;
     color: var(--COLOR-WHITE);
-    border: 5px double var(--COLOR-GOLD);
-    border-top: none;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top: var(--BORDER-DOUBLE);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: var(--PADDING);
 }
 
 .money {
-    width: 70%;
+    width: 50%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 
 .buttons {
-    width: 30%;
+    width: 50%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
 }
 
 input, button {
@@ -179,17 +167,21 @@ input, button {
 }
 
 input {
-    width: 65%;
+    width: 40%;
     margin-right: 0.3rem;
     color: var(--COLOR-GOLD);
     border: var(--BORDER);
     outline: none;
 }
 
+.buttons button {
+    width: 25%;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .button {
@@ -209,18 +201,18 @@ input::-webkit-inner-spin-button {
 }
 
 .buttonDisabled {
-    border: 1px solid gray;
-    color: gray;
+    border: 1px solid var(--COLOR-GREY);
+    color: var(--COLOR-GREY);
 }
 
-/* Color change */
+/* Color & font change */
 
 .red {
-    color: red;
+    color: var(--COLOR-RED);
 }
 
 .green {
-    color: greenyellow;
+    color: var(--COLOR-GREEN);
 }
 
 .gold {
@@ -230,5 +222,12 @@ input::-webkit-inner-spin-button {
 }
 
 .white {
+    color: var(--COLOR-WHITE);
+}
+
+.cards {
+    font-size: 5rem;
+    letter-spacing: 0.25rem;
+    line-height: 0.95;
     color: var(--COLOR-WHITE);
 }

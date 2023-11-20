@@ -8,17 +8,19 @@
     <script src="js/script.js" defer></script>
 </head>
 <body>
-    <h1 class="h1">Blackjack</h1>
+    <main class="main">  
+        <div class="div__h1">
+            <h1 class="h1">Blackjack</h1>
+        </div>
 
-    <div class="stats">
+        <div class="stats">
             <p>Round: <span class="gold" id="sRound">0</span></p>
             <p>Won: <span class="gold" id="sWin">0</span></p>
             <p>Lost: <span class="gold" id="sLose">0</span></p>
             <p>Stand off: <span class="gold" id="sStand">0</span></p>
             <p>Surrender: <span class="gold" id="sSurrend">0</span></p>
-    </div>
-
-    <main>    
+        </div>
+        
         <div class="playarea">  
             <div class="playarea__header">
                 <p class="white" id="result">Place your bet!</p>
@@ -35,24 +37,25 @@
             <div class="playarea__deck">
                 <p class="cards" id="houseHand"></p>
             </div>
-            
+                
             <div class="playarea__controls">
                 <button class="buttonDisabled" id="btnDraw">Hit</button>
                 <button class="buttonDisabled" id="btnStand">Stand</button>
                 <button class="buttonDisabled" id="btnSurrender">Surrender</button>
             </div>
         </div>
-    </main>
 
-    <div class="playerBank">
-        <div class="money">
-            <p>$: <span class="gold" id="bank"></span></p>
-            <p>Bet: <span class="gold" id="bet"></span></p>
+        <div class="playerBank">
+            <div class="money">
+                <p>$: <span class="gold" id="bank"></span></p>
+                <p>Bet: <span class="gold" id="bet"></span></p>
+            </div>
+            <div class="buttons">
+                <input type="number" id="betAmnt" min="1" placeholder="0">
+                <button class="button" id="btnBet">Bet!</button>
+                <button class="button" id="btnAllIn">All-In</button>
+            </div>
         </div>
-        <div class="buttons">
-            <input type="number" id="betAmnt" min="1" placeholder="0">
-            <button class="button" id="btnBet">Bet!</button>
-        </div>
-    </div>
+    </main>
 </body>
 </html>
