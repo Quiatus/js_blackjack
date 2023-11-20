@@ -23,6 +23,11 @@ const deck = [
     {value: 10, face: "🂮"}, {value: 10, face: "🂾"}, {value: 10, face: "🃎"}, {value: 10, face: "🃞"}
 ];
 
+let bank = 100;
+let bet = 0;
+let houseTotal = 0;
+let playTotal = 0;
+
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
 
 function drawnCard(total) {
@@ -37,20 +42,35 @@ function drawnCard(total) {
 
 // Error messages based on players action.
 
-function redMessage(errNum) {
-    let errors = [
-        "GAME OVER! No more funds!",
-        "You have lost the round!",
+function redMessage(msgNum) {
+    let messages = [
+        "GAME OVER! No more funds!",        
+        "You have lost the round!",         
         "You do not have enough money!",
         "You must bet at least 1$!",
         "Please enter a number!",
-        "You have surrendered!"
+        "You have surrendered!",
+        "YOU HAVE WON!",
+        "STAND OFF!",
+        "Draw a card or stand!" 
     ];
 
-    result.classList.remove('white', 'green');
-    result.classList.add('red');
+    result.classList.remove('white', 'green', 'red');
 
-    return document.getElementById('result').textContent = errors[errNum];
+    if (msgNum < 6) {
+        result.classList.add('red');
+    } else if (msgNum === 6) {
+        result.classList.add('green');
+    } else if (msgNum > 6) {
+        result.classList.add('white');
+    }
+
+    return document.getElementById('result').textContent = messages[msgNum];
+}
+
+function changeBankText(ban,be){
+    document.getElementById('bank').textContent = ban;
+    document.getElementById('bet').textContent = be;
 }
 
 // Disables Draw and Stand buttons
@@ -78,77 +98,48 @@ function enableBetButton(){
 // Checks if player has any funds left and informs accordingly. If so, allows to place a new bet.
 
 function playerLost() {   
-    let bank = parseInt(document.getElementById('bank').textContent);
-
     disablePlayBtn();
-
-    document.getElementById('bet').textContent = 0;
+    changeBankText(bank,0);
 
     if (bank === 0) {
         redMessage(0);
     } else {
         redMessage(1);
-        enableBetButton()
+        enableBetButton();
     }
 }
 
 // If player wins, the bet is doubled and added to player's bank. Then the player can play again.
 
 function playerWin() {
-    let bank = parseInt(document.getElementById('bank').textContent);
-    let bet = parseInt(document.getElementById('bet').textContent);
-
     bank += bet * 2;
 
-    result.classList.remove('red', 'white');
-    result.classList.add('green');
-
-    document.getElementById('bet').textContent = 0;
-    document.getElementById('result').textContent = 'YOU HAVE WON!';
-
+    redMessage(6);
+    changeBankText(bank,0);
     disablePlayBtn();
     enableBetButton()
-
-    document.getElementById('bank').textContent = bank;
 }
-
-
 
 // If player surrenders
 
 function playerSurrenders() {
-    let bank = parseInt(document.getElementById('bank').textContent);
-    let bet = parseInt(document.getElementById('bet').textContent);
-
     bank += bet / 2;
 
-    document.getElementById('bet').textContent = 0;
-
+    changeBankText(bank,0);
     redMessage(5);
     disablePlayBtn();
     enableBetButton();
-
-    document.getElementById('bank').textContent = bank;
 }
 
 // If player and the house tie 
 
 function tie() {
-    let bank = parseInt(document.getElementById('bank').textContent);
-    let bet = parseInt(document.getElementById('bet').textContent);
-
     bank += bet;
 
-    result.classList.remove('red', 'green');
-    result.classList.add('white');
-
-    document.getElementById('bet').textContent = 0;
-    document.getElementById('result').textContent = 'STAND OFF!';
-
+    redMessage(7);
+    changeBankText(bank,0);
     disablePlayBtn();
     enableBetButton();
-
-    document.getElementById('bank').textContent = bank;
 }
 
 // Initial draw of two cards for player and house.
@@ -157,43 +148,43 @@ function initDraw() {
     let playHand = document.getElementById('playHand').textContent;
     let houseHand = document.getElementById('houseHand').textContent;
 
-    let totalPlayer = 0;
-    let totalHouse = 0;
+    playTotal = 0;
+    houseTotal = 0;
 
     for (let index = 0; index < 4; index++) {
         switch (index) {
             case 0: 
-                card = drawnCard(totalPlayer);
-                totalPlayer += card;
+                card = drawnCard(playTotal);
+                playTotal += card;
                 playHand = card;
                 break;
             case 1:
-                card = drawnCard(totalPlayer);
-                totalPlayer += card;
+                card = drawnCard(playTotal);
+                playTotal += card;
                 playHand = playHand + '-' + card;
                 break;
             case 2:
-                card = drawnCard(totalHouse);
-                totalHouse += card;
+                card = drawnCard(houseTotal);
+                houseTotal += card;
                 houseHand = card;
                 break;
             case 3:
-                card = drawnCard(totalHouse);
-                totalHouse += card;
+                card = drawnCard(houseTotal);
+                houseTotal += card;
                 houseHand = houseHand + '-' + card;
                 break;
         }
     }
 
     document.getElementById('playHand').textContent = playHand;
-    document.getElementById('playTotal').textContent = totalPlayer;
     document.getElementById('houseHand').textContent = houseHand;
-    document.getElementById('houseTotal').textContent = totalHouse;
+    document.getElementById('houseTotal').textContent = houseTotal;
+    document.getElementById('playTotal').textContent = playTotal;
 
-    if ((totalPlayer === 21) && (totalHouse < 21)) {
+    if ((playTotal === 21) && (houseTotal < 21)) {
         disablePlayBtn();
         setTimeout(() => {houseDraw()}, houseTimer);
-    } else if ((totalPlayer === 21) && (totalHouse === 21)) {
+    } else if ((playTotal === 21) && (houseTotal === 21)) {
         tie();
     }
 }
@@ -202,22 +193,21 @@ function initDraw() {
 
 function placeBet() {
     let betAmnt = parseInt(document.getElementById('betAmnt').value);
-    let bank = parseInt(document.getElementById('bank').textContent);
 
     // Verifying if the input amount is correct
 
     if ((betAmnt > 0) && (betAmnt <= bank)) {
-        bank = bank - betAmnt;
-        document.getElementById('bet').textContent = betAmnt;
-        document.getElementById('bank').textContent = bank;
-
-        result.classList.remove('red', 'green');
-        result.classList.add('white');
-
+        bet = betAmnt;
         document.getElementById('betAmnt').value = "";
-        document.getElementById('result').textContent = 'Draw a card or stand';
 
-        enableBetButton();
+        bank = bank - bet;
+        
+        changeBankText(bank,bet);
+        redMessage(8);
+
+        btnBet.classList.remove('button');
+        btnBet.classList.add('buttonDisabled');
+        btnBet.removeEventListener('click',placeBet);
 
         btnDraw.classList.remove('buttonDisabled');
         btnDraw.classList.add('button');
@@ -250,21 +240,20 @@ function placeBet() {
 
 function playCard() {
     let playHand = document.getElementById('playHand').textContent;
-    let totalPlayer = parseInt(document.getElementById('playTotal').textContent);
 
     btnSurrender.classList.remove('button');
     btnSurrender.classList.add('buttonDisabled');
     btnSurrender.removeEventListener('click',playerSurrenders);
 
-    card = drawnCard(totalPlayer);
-    totalPlayer += card;
+    card = drawnCard(playTotal);
+    playTotal += card;
 
     document.getElementById('playHand').textContent = playHand + '-' + card;
-    document.getElementById('playTotal').textContent = totalPlayer;
+    document.getElementById('playTotal').textContent = playTotal;
 
-    if (totalPlayer > 21) {
+    if (playTotal > 21) {
         playerLost();
-    } else if (totalPlayer === 21) {
+    } else if (playTotal === 21) {
         btnDraw.classList.remove('button');
         btnDraw.classList.add('buttonDisabled');
         btnDraw.removeEventListener('click',playCard);
@@ -274,9 +263,6 @@ function playCard() {
 // If player decides to stand (i.e score is less than 21), the house will start drawing cards.
 
 function stand() {
-    let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
-    let playTotal = parseInt(document.getElementById('playTotal').textContent);
-
     if (houseTotal > playTotal) {
         playerLost();
     } else {
@@ -288,11 +274,6 @@ function stand() {
 // House draws a card.
 
 function houseDraw() {
-    let houseTotal = parseInt(document.getElementById('houseTotal').textContent);
-    let playTotal = parseInt(document.getElementById('playTotal').textContent);
-
-    // Adds timer for the house draws to add suspence
-    
     function iter(){
         if (houseTotal <= playTotal) {
             
@@ -320,4 +301,9 @@ function houseDraw() {
     iter();
 }
 
-btnBet.addEventListener('click', placeBet);
+function gameStart() {
+    btnBet.addEventListener('click', placeBet);
+    changeBankText(bank,'-');
+}
+
+gameStart();

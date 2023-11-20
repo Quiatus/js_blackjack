@@ -13,16 +13,16 @@
     <main>    
         <div class="playarea">  
             <div class="playarea__header">
-                <p class="white" id="result">Place your bet</p>
+                <p class="white" id="result">Place your bet!</p>
             </div>
             <div class="playarea__score">
-                <span class="white">You:</span><span class="gold" id="playTotal">0</span>
+                <span class="white">You:</span><span class="gold" id="playTotal">-</span>
             </div>
             <div class="playarea__deck">
                 <p class="cards" id="playHand"></p>
             </div>
             <div class="playarea__score">
-                <span class="white">House:</span><span class="gold" id="houseTotal">0</span>
+                <span class="white">House:</span><span class="gold" id="houseTotal">-</span>
             </div>
             <div class="playarea__deck">
                 <p class="cards" id="houseHand"></p>
@@ -38,8 +38,8 @@
 
     <div class="playerBank">
         <div class="money">
-            <p>$: <span class="gold" id="bank">100</span></p>
-            <p>Bet: <span class="gold" id="bet">0</span></p>
+            <p>$: <span class="gold" id="bank"></span></p>
+            <p>Bet: <span class="gold" id="bet"></span></p>
         </div>
         <div class="buttons">
             <input type="number" id="betAmnt" min="1" placeholder="0">

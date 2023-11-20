@@ -94,8 +94,8 @@ main {
 .playarea__controls {
     display: flex;
     justify-content: space-evenly;
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
+    padding-top: 0.8rem;
+    margin-top: 0.8rem;
     border-top: 1px solid var(--COLOR-GOLD);
 }
 
@@ -116,9 +116,9 @@ main {
 .playarea__score {
     display: flex;
     justify-content: space-between;
-    padding: 0 3rem;
+    padding: 0 3rem 0 2rem; 
     font-size: 1.2rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 /* Player Bank styles */
