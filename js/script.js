@@ -170,7 +170,7 @@ function playerWin() {
 // If player surrenders
 
 function playerSurrenders() {
-    bank += bet / 2;
+    bank += Math.floor(bet / 2);
 
     playMessage(5);
     changeBankText(bank,0);
