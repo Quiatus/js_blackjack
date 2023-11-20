@@ -73,8 +73,9 @@ function playMessage(msgNum) {
         "GAME OVER! No more funds!",        
         "You have lost the round!",         
         "You do not have enough money!",
-        "You must bet at least 1$!",
+        "You must bet at least 2$!",
         "Please enter a number!",
+        "Bet must be an even number!",
         "You have surrendered!",
         "YOU HAVE WON!",
         "STAND OFF!",
@@ -83,11 +84,11 @@ function playMessage(msgNum) {
 
     result.classList.remove('white', 'green', 'red');
 
-    if (msgNum < 6) {
+    if (msgNum < 7) {
         result.classList.add('red');
-    } else if (msgNum === 6) {
+    } else if (msgNum === 7) {
         result.classList.add('green');
-    } else if (msgNum > 6) {
+    } else if (msgNum > 7) {
         result.classList.add('white');
     }
 
@@ -148,7 +149,7 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
 function playerLost() {   
     changeBankText(bank,0);
 
-    if (bank === 0) {
+    if (bank < 2) {
         playMessage(0);
         disablePlayBtn(false,false,false,false);
     } else {
@@ -162,7 +163,7 @@ function playerLost() {
 function playerWin() {
     bank += bet * 2;
 
-    playMessage(6);
+    playMessage(7);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
 }
@@ -172,7 +173,7 @@ function playerWin() {
 function playerSurrenders() {
     bank += bet / 2;
 
-    playMessage(5);
+    playMessage(6);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
 }
@@ -182,7 +183,7 @@ function playerSurrenders() {
 function tie() {
     bank += bet;
 
-    playMessage(7);
+    playMessage(8);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
 }
@@ -214,12 +215,12 @@ function initDraw() {
 function placeBet() {
     let betAmnt = parseInt(document.getElementById('betAmnt').value);
 
-    if ((betAmnt > 0) && (betAmnt <= bank)) {
+    if ((betAmnt > 1) && (betAmnt <= bank)) {
         document.getElementById('betAmnt').value = "";
         bet = betAmnt;
         bank = bank - bet;
         
-        playMessage(8);
+        playMessage(9);
         changeBankText(bank,bet);
         disablePlayBtn(true,true,true,false);
         initDraw();
@@ -228,8 +229,12 @@ function placeBet() {
         document.getElementById('betAmnt').value = bank;
     } else if (betAmnt < 0) {
         document.getElementById('betAmnt').value = 0;
-    } else if (betAmnt === 0) {
+    } else if ((betAmnt === 0) || (betAmnt === 1)) {
         playMessage(3);
+        document.getElementById('betAmnt').value = "";
+    } else if (betAmnt % 2 !== 0) {
+        playMessage(5);
+        document.getElementById('betAmnt').value = "";
     } else {
         playMessage(4);
         document.getElementById('betAmnt').value = "";
