@@ -69,7 +69,7 @@ function drawCard(player) {
     let playHand = document.getElementById('playHand').textContent;
     let houseHand = document.getElementById('houseHand').textContent;
 
-    if (player === true) {
+    if (player) {
         if ((playTotal >= 11) && (cardValue === 11)) {
             cardValue = 1;
         }
@@ -129,7 +129,7 @@ function changeBankText(ban,be){
 // Enables or disables player buttons based on the state of game
 
 function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
-    if (btdraw === true) {
+    if (btdraw) {
         btnDraw.classList.remove('buttonDisabled');
         btnDraw.classList.add('button');
         btnDraw.addEventListener('click',playCard);
@@ -139,7 +139,7 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
         btnDraw.removeEventListener('click',playCard);
     }
     
-    if (btstand === true) {
+    if (btstand) {
         btnStand.classList.remove('buttonDisabled');
         btnStand.classList.add('button');
         btnStand.addEventListener('click',stand);
@@ -149,7 +149,7 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
         btnStand.removeEventListener('click',stand);
     }
 
-    if (btsurrender === true) {
+    if (btsurrender) {
         btnSurrender.classList.remove('buttonDisabled');
         btnSurrender.classList.add('button');
         btnSurrender.addEventListener('click',playerSurrenders);
@@ -159,7 +159,7 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
         btnSurrender.removeEventListener('click',playerSurrenders);
     }
 
-    if (btbet === true) {
+    if (btbet) {
         btnBet.classList.remove('buttonDisabled');
         btnBet.classList.add('button');
         btnBet.addEventListener('click',placeBet);

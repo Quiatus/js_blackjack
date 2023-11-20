@@ -56,13 +56,13 @@ body {
 
 .main {
     width: var(--WIDTH);
-    /* height:515px; */
     background-image: url(../media/back.png);
     background-size: cover;
     margin: 1rem auto;
     border: 5px double var(--COLOR-GOLD);
     border-radius: 10px;
     color: var(--COLOR-WHITE);
+    position: relative;
 }
 
 /* Header */
