@@ -39,7 +39,6 @@ function drawCard(player) {
     let cardFace = currentDeck[card].face;
 
     currentDeck.splice(card, 1);
-    console.log(currentDeck);
 
     let playHand = document.getElementById('playHand').textContent;
     let houseHand = document.getElementById('houseHand').textContent;
@@ -143,7 +142,6 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
         btnBet.removeEventListener('click',placeBet);
     }
 }
-
 
 // Checks if player has any funds left and informs accordingly. If so, allows to place a new bet.
 
