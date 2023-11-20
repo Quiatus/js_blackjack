@@ -11,6 +11,12 @@ let houseTotal = 0;
 let playTotal = 0;
 let currentDeck = [];
 
+let round = 0;
+let wins = 0;
+let loses = 0;
+let standoffs = 0;
+let surrenders = 0;
+
 function resetDeck() {
     const deck = [
         {value: 11, face: "🂡"}, {value: 11, face: "🂱"}, {value: 11, face: "🃁"}, {value: 11, face: "🃑"}, 
@@ -29,6 +35,25 @@ function resetDeck() {
     ];
 
     currentDeck = deck;
+}
+
+function playerStats(stat){
+    if (stat === 0) {
+        round += 1;
+        document.getElementById('sRound').textContent = round;
+    } else if (stat === 1) {
+        wins += 1;
+        document.getElementById('sWin').textContent = wins;
+    } else if (stat === 2) {
+        loses += 1;
+        document.getElementById('sLose').textContent = loses;
+    } else if (stat === 3) {
+        standoffs += 1;
+        document.getElementById('sStand').textContent = standoffs;
+    } else if (stat === 4) {
+        surrenders += 1;
+        document.getElementById('sSurrend').textContent = surrenders;
+    }
 }
 
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
@@ -78,7 +103,8 @@ function playMessage(msgNum) {
         "You have surrendered!",
         "YOU HAVE WON!",
         "STAND OFF!",
-        "Draw a card or stand!" 
+        "Draw a card or stand!",
+        "Dealer's turn!"
     ];
 
     result.classList.remove('white', 'green', 'red');
@@ -147,6 +173,7 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
 
 function playerLost() {   
     changeBankText(bank,0);
+    playerStats(2);
 
     if (bank === 0) {
         playMessage(0);
@@ -162,6 +189,7 @@ function playerLost() {
 function playerWin() {
     bank += bet * 2;
 
+    playerStats(1);
     playMessage(6);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -172,6 +200,7 @@ function playerWin() {
 function playerSurrenders() {
     bank += Math.ceil(bet / 2);
 
+    playerStats(4);
     playMessage(5);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -182,6 +211,7 @@ function playerSurrenders() {
 function tie() {
     bank += bet;
 
+    playerStats(3);
     playMessage(7);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -195,6 +225,7 @@ function initDraw() {
     playTotal = 0;
     houseTotal = 0;
 
+    playerStats(0);
     resetDeck();
     drawCard(true);
     drawCard(true);
@@ -202,6 +233,7 @@ function initDraw() {
     drawCard(false);
 
     if ((playTotal === 21) && (houseTotal < 21)) {
+        playMessage(9);
         disablePlayBtn(false,false,false,false);
         setTimeout(() => {houseDraw()}, houseTimer);
     } else if ((playTotal === 21) && (houseTotal === 21)) {
@@ -256,6 +288,7 @@ function stand() {
         playerLost();
     } else {
         disablePlayBtn(false,false,false,false);
+        playMessage(9);
         setTimeout(() => {houseDraw()}, houseTimer);
     }
 }
@@ -263,6 +296,7 @@ function stand() {
 // House draws a card. Adds a delay to house draws. As long as the house total is less than players, the house draws a card.
 
 function houseDraw() {
+    
     function iter(){
         if (houseTotal <= playTotal) {     
             if ((houseTotal >= 17) && (playTotal === houseTotal)) {
