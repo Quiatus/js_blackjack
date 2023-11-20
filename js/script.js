@@ -3,46 +3,73 @@ const btnDraw = document.getElementById('btnDraw');
 const btnStand = document.getElementById('btnStand');
 const btnSurrender = document.getElementById('btnSurrender');
 const result = document.getElementById('result');
-
 const houseTimer = 1000;
-
-const deck = [
-    {value: 11, face: "🂡"}, {value: 11, face: "🂱"}, {value: 11, face: "🃁"}, {value: 11, face: "🃑"}, 
-    {value: 2, face: "🂢"}, {value: 2, face: "🂲"}, {value: 2, face: "🃂"}, {value: 2, face: "🃒"}, 
-    {value: 3, face: "🂣"}, {value: 3, face: "🂳"}, {value: 3, face: "🃃"}, {value: 3, face: "🃓"}, 
-    {value: 4, face: "🂤"}, {value: 4, face: "🂴"}, {value: 4, face: "🃄"}, {value: 4, face: "🃔"}, 
-    {value: 5, face: "🂥"}, {value: 5, face: "🂵"}, {value: 5, face: "🃅"}, {value: 5, face: "🃕"}, 
-    {value: 6, face: "🂦"}, {value: 6, face: "🂶"}, {value: 6, face: "🃆"}, {value: 6, face: "🃖"}, 
-    {value: 7, face: "🂧"}, {value: 7, face: "🂷"}, {value: 7, face: "🃇"}, {value: 7, face: "🃗"}, 
-    {value: 8, face: "🂨"}, {value: 8, face: "🂸"}, {value: 8, face: "🃈"}, {value: 8, face: "🃘"}, 
-    {value: 9, face: "🂩"}, {value: 9, face: "🂹"}, {value: 9, face: "🃉"}, {value: 9, face: "🃙"}, 
-    {value: 10, face: "🂪"}, {value: 10, face: "🂺"}, {value: 10, face: "🃊"}, {value: 10, face: "🃚"}, 
-    {value: 10, face: "🂫"}, {value: 10, face: "🂻"}, {value: 10, face: "🃋"}, {value: 10, face: "🃛"}, 
-    {value: 10, face: "🂬"}, {value: 10, face: "🂼"}, {value: 10, face: "🃌"}, {value: 10, face: "🃜"}, 
-    {value: 10, face: "🂭"}, {value: 10, face: "🂽"}, {value: 10, face: "🃍"}, {value: 10, face: "🃝"}, 
-    {value: 10, face: "🂮"}, {value: 10, face: "🂾"}, {value: 10, face: "🃎"}, {value: 10, face: "🃞"}
-];
 
 let bank = 100;
 let bet = 0;
 let houseTotal = 0;
 let playTotal = 0;
+let currentDeck = [];
+
+function resetDeck() {
+    const deck = [
+        {value: 11, face: "🂡"}, {value: 11, face: "🂱"}, {value: 11, face: "🃁"}, {value: 11, face: "🃑"}, 
+        {value: 2, face: "🂢"}, {value: 2, face: "🂲"}, {value: 2, face: "🃂"}, {value: 2, face: "🃒"}, 
+        {value: 3, face: "🂣"}, {value: 3, face: "🂳"}, {value: 3, face: "🃃"}, {value: 3, face: "🃓"}, 
+        {value: 4, face: "🂤"}, {value: 4, face: "🂴"}, {value: 4, face: "🃄"}, {value: 4, face: "🃔"}, 
+        {value: 5, face: "🂥"}, {value: 5, face: "🂵"}, {value: 5, face: "🃅"}, {value: 5, face: "🃕"}, 
+        {value: 6, face: "🂦"}, {value: 6, face: "🂶"}, {value: 6, face: "🃆"}, {value: 6, face: "🃖"}, 
+        {value: 7, face: "🂧"}, {value: 7, face: "🂷"}, {value: 7, face: "🃇"}, {value: 7, face: "🃗"}, 
+        {value: 8, face: "🂨"}, {value: 8, face: "🂸"}, {value: 8, face: "🃈"}, {value: 8, face: "🃘"}, 
+        {value: 9, face: "🂩"}, {value: 9, face: "🂹"}, {value: 9, face: "🃉"}, {value: 9, face: "🃙"}, 
+        {value: 10, face: "🂪"}, {value: 10, face: "🂺"}, {value: 10, face: "🃊"}, {value: 10, face: "🃚"}, 
+        {value: 10, face: "🂫"}, {value: 10, face: "🂻"}, {value: 10, face: "🃋"}, {value: 10, face: "🃛"}, 
+        {value: 10, face: "🂭"}, {value: 10, face: "🂽"}, {value: 10, face: "🃍"}, {value: 10, face: "🃝"}, 
+        {value: 10, face: "🂮"}, {value: 10, face: "🂾"}, {value: 10, face: "🃎"}, {value: 10, face: "🃞"}
+    ];
+
+    currentDeck = deck;
+}
 
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
 
-function drawnCard(total) {
-    let drawnCard = Math.floor(Math.random() * (12 - 2) + 2);
+function drawCard(player) {
+    let card = Math.floor(Math.random() * currentDeck.length);
+    let cardValue = currentDeck[card].value;
+    let cardFace = currentDeck[card].face;
 
-    if ((total >= 11) && (drawnCard === 11)) {
-        return 1;
+    currentDeck.splice(card, 1);
+    console.log(currentDeck);
+
+    let playHand = document.getElementById('playHand').textContent;
+    let houseHand = document.getElementById('houseHand').textContent;
+
+    if (player === true) {
+        if ((playTotal >= 11) && (cardValue === 11)) {
+            cardValue = 1;
+        }
+
+        playTotal += cardValue;
+        playHand += cardFace;
+
+        document.getElementById('playHand').textContent = playHand;
+        document.getElementById('playTotal').textContent = playTotal;
     } else {
-        return drawnCard;
+        if ((houseTotal >= 11) && (cardValue === 11)) {
+            cardValue = 1;
+        }
+
+        houseTotal += cardValue;
+        houseHand += cardFace;
+
+        document.getElementById('houseHand').textContent = houseHand;
+        document.getElementById('houseTotal').textContent = houseTotal;
     }
 }
 
-// Error messages based on players action.
+// Messages based on players action.
 
-function redMessage(msgNum) {
+function playMessage(msgNum) {
     let messages = [
         "GAME OVER! No more funds!",        
         "You have lost the round!",         
@@ -65,7 +92,7 @@ function redMessage(msgNum) {
         result.classList.add('white');
     }
 
-    return document.getElementById('result').textContent = messages[msgNum];
+    document.getElementById('result').textContent = messages[msgNum];
 }
 
 function changeBankText(ban,be){
@@ -73,39 +100,62 @@ function changeBankText(ban,be){
     document.getElementById('bet').textContent = be;
 }
 
-// Disables Draw and Stand buttons
+// Enables or disables player buttons based on the state of game
 
-function disablePlayBtn() {
-    btnDraw.classList.remove('button');
-    btnDraw.classList.add('buttonDisabled');
-    btnDraw.removeEventListener('click',playCard);
+function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
+    if (btdraw === true) {
+        btnDraw.classList.remove('buttonDisabled');
+        btnDraw.classList.add('button');
+        btnDraw.addEventListener('click',playCard);
+    } else {
+        btnDraw.classList.remove('button');
+        btnDraw.classList.add('buttonDisabled');
+        btnDraw.removeEventListener('click',playCard);
+    }
+    
+    if (btstand === true) {
+        btnStand.classList.remove('buttonDisabled');
+        btnStand.classList.add('button');
+        btnStand.addEventListener('click',stand);
+    } else {
+        btnStand.classList.remove('button');
+        btnStand.classList.add('buttonDisabled');
+        btnStand.removeEventListener('click',stand);
+    }
 
-    btnStand.classList.remove('button');
-    btnStand.classList.add('buttonDisabled');
-    btnStand.removeEventListener('click',stand);
+    if (btsurrender === true) {
+        btnSurrender.classList.remove('buttonDisabled');
+        btnSurrender.classList.add('button');
+        btnSurrender.addEventListener('click',playerSurrenders);
+    } else {
+        btnSurrender.classList.remove('button');
+        btnSurrender.classList.add('buttonDisabled');
+        btnSurrender.removeEventListener('click',playerSurrenders);
+    }
 
-    btnSurrender.classList.remove('button');
-    btnSurrender.classList.add('buttonDisabled');
-    btnSurrender.removeEventListener('click',playerSurrenders);
+    if (btbet === true) {
+        btnBet.classList.remove('buttonDisabled');
+        btnBet.classList.add('button');
+        btnBet.addEventListener('click',placeBet);
+    } else {
+        btnBet.classList.remove('button');
+        btnBet.classList.add('buttonDisabled');
+        btnBet.removeEventListener('click',placeBet);
+    }
 }
 
-function enableBetButton(){
-    btnBet.classList.remove('buttonDisabled');
-    btnBet.classList.add('button');
-    btnBet.addEventListener('click',placeBet);
-}
 
 // Checks if player has any funds left and informs accordingly. If so, allows to place a new bet.
 
 function playerLost() {   
-    disablePlayBtn();
     changeBankText(bank,0);
 
     if (bank === 0) {
-        redMessage(0);
+        playMessage(0);
+        disablePlayBtn(false,false,false,false);
     } else {
-        redMessage(1);
-        enableBetButton();
+        playMessage(1);
+        disablePlayBtn(false,false,false,true);
     }
 }
 
@@ -114,10 +164,9 @@ function playerLost() {
 function playerWin() {
     bank += bet * 2;
 
-    redMessage(6);
+    playMessage(6);
     changeBankText(bank,0);
-    disablePlayBtn();
-    enableBetButton()
+    disablePlayBtn(false,false,false,true);
 }
 
 // If player surrenders
@@ -125,10 +174,9 @@ function playerWin() {
 function playerSurrenders() {
     bank += bet / 2;
 
+    playMessage(5);
     changeBankText(bank,0);
-    redMessage(5);
-    disablePlayBtn();
-    enableBetButton();
+    disablePlayBtn(false,false,false,true);
 }
 
 // If player and the house tie 
@@ -136,102 +184,56 @@ function playerSurrenders() {
 function tie() {
     bank += bet;
 
-    redMessage(7);
+    playMessage(7);
     changeBankText(bank,0);
-    disablePlayBtn();
-    enableBetButton();
+    disablePlayBtn(false,false,false,true);
 }
 
 // Initial draw of two cards for player and house.
 
 function initDraw() {
-    let playHand = document.getElementById('playHand').textContent;
-    let houseHand = document.getElementById('houseHand').textContent;
-
+    document.getElementById('playHand').textContent = "";
+    document.getElementById('houseHand').textContent = "";
     playTotal = 0;
     houseTotal = 0;
 
-    for (let index = 0; index < 4; index++) {
-        switch (index) {
-            case 0: 
-                card = drawnCard(playTotal);
-                playTotal += card;
-                playHand = card;
-                break;
-            case 1:
-                card = drawnCard(playTotal);
-                playTotal += card;
-                playHand = playHand + '-' + card;
-                break;
-            case 2:
-                card = drawnCard(houseTotal);
-                houseTotal += card;
-                houseHand = card;
-                break;
-            case 3:
-                card = drawnCard(houseTotal);
-                houseTotal += card;
-                houseHand = houseHand + '-' + card;
-                break;
-        }
-    }
-
-    document.getElementById('playHand').textContent = playHand;
-    document.getElementById('houseHand').textContent = houseHand;
-    document.getElementById('houseTotal').textContent = houseTotal;
-    document.getElementById('playTotal').textContent = playTotal;
+    resetDeck();
+    drawCard(true);
+    drawCard(true);
+    drawCard(false);
+    drawCard(false);
 
     if ((playTotal === 21) && (houseTotal < 21)) {
-        disablePlayBtn();
+        disablePlayBtn(false,false,false,false);
         setTimeout(() => {houseDraw()}, houseTimer);
     } else if ((playTotal === 21) && (houseTotal === 21)) {
         tie();
     }
 }
 
-// Place the bet
+// Verifying if the input amount is correct and place the bet
 
 function placeBet() {
     let betAmnt = parseInt(document.getElementById('betAmnt').value);
 
-    // Verifying if the input amount is correct
-
     if ((betAmnt > 0) && (betAmnt <= bank)) {
-        bet = betAmnt;
         document.getElementById('betAmnt').value = "";
-
+        bet = betAmnt;
         bank = bank - bet;
         
+        playMessage(8);
         changeBankText(bank,bet);
-        redMessage(8);
-
-        btnBet.classList.remove('button');
-        btnBet.classList.add('buttonDisabled');
-        btnBet.removeEventListener('click',placeBet);
-
-        btnDraw.classList.remove('buttonDisabled');
-        btnDraw.classList.add('button');
-        btnDraw.addEventListener('click',playCard);
-
-        btnStand.classList.remove('buttonDisabled');
-        btnStand.classList.add('button');
-        btnStand.addEventListener('click',stand);
-
-        btnSurrender.classList.remove('buttonDisabled');
-        btnSurrender.classList.add('button');
-        btnSurrender.addEventListener('click',playerSurrenders);
-
+        disablePlayBtn(true,true,true,false);
         initDraw();
-
     } else if (betAmnt > bank) {
-        redMessage(2);
+        playMessage(2);
         document.getElementById('betAmnt').value = bank;
     } else if (betAmnt < 0) {
         document.getElementById('betAmnt').value = 0;
     } else if (betAmnt === 0) {
-        redMessage(3);
+        playMessage(3);
     } else {
-        redMessage(4);
+        playMessage(4);
         document.getElementById('betAmnt').value = "";
     }
 }
@@ -239,24 +241,13 @@ function placeBet() {
 // Player draws a card. 
 
 function playCard() {
-    let playHand = document.getElementById('playHand').textContent;
-
-    btnSurrender.classList.remove('button');
-    btnSurrender.classList.add('buttonDisabled');
-    btnSurrender.removeEventListener('click',playerSurrenders);
-
-    card = drawnCard(playTotal);
-    playTotal += card;
-
-    document.getElementById('playHand').textContent = playHand + '-' + card;
-    document.getElementById('playTotal').textContent = playTotal;
+    disablePlayBtn(true,true,false,false);
+    drawCard(true);
 
     if (playTotal > 21) {
         playerLost();
     } else if (playTotal === 21) {
-        btnDraw.classList.remove('button');
-        btnDraw.classList.add('buttonDisabled');
-        btnDraw.removeEventListener('click',playCard);
+        disablePlayBtn(false,true,false,false);
     }
 }
 
@@ -266,29 +257,22 @@ function stand() {
     if (houseTotal > playTotal) {
         playerLost();
     } else {
-        disablePlayBtn();
+        disablePlayBtn(false,false,false,false);
         setTimeout(() => {houseDraw()}, houseTimer);
     }
 }
 
-// House draws a card.
+// House draws a card. Adds a delay to house draws. As long as the house total is less than players, the house draws a card.
 
 function houseDraw() {
     function iter(){
-        if (houseTotal <= playTotal) {
-            
-            if ((houseTotal === 21) && (playTotal === 21)) {
+        if (houseTotal <= playTotal) {     
+            if ((houseTotal >= 17) && (playTotal === houseTotal)) {
                 tie();
             } else {
                 setTimeout(iter, houseTimer);
+                drawCard(false);
 
-                let houseHand = document.getElementById('houseHand').textContent;
-                let card = drawnCard(houseTotal);
-                houseTotal += card;
-        
-                document.getElementById('houseHand').textContent = houseHand + '-' + card;
-                document.getElementById('houseTotal').textContent = houseTotal;
-        
                 if ((houseTotal <= 21) && (houseTotal > playTotal)) {
                     playerLost();
                 } else if (houseTotal > 21) {
@@ -301,8 +285,10 @@ function houseDraw() {
     iter();
 }
 
+// Initiates the game
+
 function gameStart() {
-    btnBet.addEventListener('click', placeBet);
+    disablePlayBtn(false,false,false,true);
     changeBankText(bank,'-');
 }
 

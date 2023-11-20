@@ -44,7 +44,7 @@ body {
 }
 
 .cards {
-    font-size: 4.2rem;
+    font-size: 5rem;
     letter-spacing: 0.25rem;
     line-height: 0.95;
     color: var(--COLOR-WHITE);
@@ -53,8 +53,8 @@ body {
 /* Main */
 
 main {
-    width: 640px;
-    height:480px;
+    width: 750px;
+    height:520px;
     background-image: url(../media/back.png);
     background-size: cover;
     margin: 0 auto;
@@ -70,7 +70,7 @@ main {
     color: var(--COLOR-GOLD);
     max-width: fit-content;
     margin: 1rem auto 0;
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-shadow: 2px 2px 3px black;
     letter-spacing: 0.3em;
     background-image: url(../media/back.png);
@@ -100,7 +100,7 @@ main {
 }
 
 .playarea__deck {
-    height: 100px;
+    height: 120px;
     background-color: rgba(0, 0, 0, 0.35);
     border-radius: 5px;
     display: flex;
@@ -124,7 +124,7 @@ main {
 /* Player Bank styles */
 
 .playerBank {
-    width: 640px;
+    width: 750px;
     background-image: url(../media/back.png);
     margin: 0 auto;
     color: var(--COLOR-WHITE);
