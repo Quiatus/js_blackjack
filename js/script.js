@@ -54,11 +54,10 @@ function drawCard(player) {
     let card = Math.floor(Math.random() * currentDeck.length);
     let cardValue = currentDeck[card].value;
     let cardFace = currentDeck[card].face;
-
-    currentDeck.splice(card, 1);
-
     let playHand = document.getElementById('playHand').textContent;
     let houseHand = document.getElementById('houseHand').textContent;
+
+    currentDeck.splice(card, 1);
 
     if (player) {
         if ((playTotal >= 11) && (cardValue === 11)) {
@@ -331,7 +330,6 @@ function gameStart() {
     bank = 100;
     bet = 0;
     statTrack = [0, 0, 0, 0, 0];
-    console.log(statTrack);
 
     document.getElementById('playHand').textContent = "";
     document.getElementById('houseHand').textContent = "";
