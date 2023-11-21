@@ -172,6 +172,7 @@ function playerLost() {
         playMessage(0);
         disablePlayBtn(false,false,false,false);
         btnNewGame.classList.remove('hidden');
+        btnNewGame.addEventListener('click',gameStart);
     } else {
         playMessage(1);
         disablePlayBtn(false,false,false,true);
@@ -346,6 +347,7 @@ function gameStart() {
     changeBankText(bank,'-');
 
     btnNewGame.classList.add('hidden');
+    btnNewGame.removeEventListener('click',gameStart);
 }
 
 btnNewGame.addEventListener('click',gameStart);
