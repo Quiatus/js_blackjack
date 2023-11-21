@@ -3,20 +3,18 @@ const btnAllIn = document.getElementById('btnAllIn');
 const btnDraw = document.getElementById('btnDraw');
 const btnStand = document.getElementById('btnStand');
 const btnSurrender = document.getElementById('btnSurrender');
+const btnNewGame = document.getElementById('btnNewGame');
 const result = document.getElementById('result');
 const houseTimer = 1000;
 
-let bank = 100;
+let bank = 0;
 let bet = 0;
 let houseTotal = 0;
 let playTotal = 0;
 let currentDeck = [];
+let statTrack = [0, 0, 0, 0, 0];
 
-let round = 0;
-let wins = 0;
-let loses = 0;
-let standoffs = 0;
-let surrenders = 0;
+// resets current deck of cards
 
 function resetDeck() {
     const deck = [
@@ -38,23 +36,16 @@ function resetDeck() {
     currentDeck = deck;
 }
 
-function playerStats(stat){
-    if (stat === 0) {
-        round += 1;
-        document.getElementById('sRound').textContent = round;
-    } else if (stat === 1) {
-        wins += 1;
-        document.getElementById('sWin').textContent = wins;
-    } else if (stat === 2) {
-        loses += 1;
-        document.getElementById('sLose').textContent = loses;
-    } else if (stat === 3) {
-        standoffs += 1;
-        document.getElementById('sStand').textContent = standoffs;
-    } else if (stat === 4) {
-        surrenders += 1;
-        document.getElementById('sSurrend').textContent = surrenders;
-    }
+// updates player win statistics
+
+function playerStats(stat, isNewGame){
+    let ids = ['sRound','sWin','sLose','sStand','sSurrend'];
+
+    if (isNewGame === false) {
+        statTrack[stat] += 1;
+    } 
+
+    document.getElementById(ids[stat]).textContent = statTrack[stat];
 }
 
 // Draw a card with value between 2 - 11 (Ace). If the total is more than 11 and another Ace is drawn, the value of Ace is 1.
@@ -96,16 +87,18 @@ function drawCard(player) {
 
 function playMessage(msgNum) {
     let messages = [
-        {color: "red", text: "GAME OVER! Not enough funds to play!"},
-        {color: "red", text: "You have lost the round!"},
-        {color: "red", text: "You do not have enough funds!"},
-        {color: "red", text: "You must bet at least 5$!"},
-        {color: "red", text: "Please enter a number!"},
-        {color: "red", text: "You have surrendered!"},
-        {color: "green", text: "YOU HAVE WON!"},
-        {color: "white", text: "STAND OFF!"},
-        {color: "white", text: "Draw a card or stand!"},
-        {color: "white", text: "Dealer's turn!"},];
+        {color: "red", text: "GAME OVER! Not enough funds to play!"}, // 0
+        {color: "red", text: "You have lost the round!"}, // 1
+        {color: "red", text: "You do not have enough funds!"}, // 2
+        {color: "red", text: "You must bet at least 5$!"}, // 3
+        {color: "red", text: "Please enter a number!"}, // 4 
+        {color: "red", text: "You have surrendered!"}, // 5
+        {color: "green", text: "YOU HAVE WON!"}, // 6
+        {color: "white", text: "STAND OFF!"}, // 7
+        {color: "white", text: "Draw a card or stand!"}, // 8
+        {color: "white", text: "Dealer's turn!"}, // 9
+        {color: "white", text: "Place your bet!"} // 10
+    ];
 
     result.classList.remove('white', 'green', 'red');
     result.classList.add(messages[msgNum].color);
@@ -173,11 +166,12 @@ function disablePlayBtn(btdraw,btstand,btsurrender,btbet) {
 
 function playerLost() {   
     changeBankText(bank,0);
-    playerStats(2);
+    playerStats(2, false);
 
     if (bank < 5) {
         playMessage(0);
         disablePlayBtn(false,false,false,false);
+        btnNewGame.classList.remove('hidden');
     } else {
         playMessage(1);
         disablePlayBtn(false,false,false,true);
@@ -189,7 +183,7 @@ function playerLost() {
 function playerWin() {
     bank += bet * 2;
 
-    playerStats(1);
+    playerStats(1, false);
     playMessage(6);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -200,7 +194,7 @@ function playerWin() {
 function playerSurrenders() {
     bank += Math.ceil(bet / 2);
 
-    playerStats(4);
+    playerStats(4, false);
     playMessage(5);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -211,7 +205,7 @@ function playerSurrenders() {
 function tie() {
     bank += bet;
 
-    playerStats(3);
+    playerStats(3, false);
     playMessage(7);
     changeBankText(bank,0);
     disablePlayBtn(false,false,false,true);
@@ -225,7 +219,7 @@ function initDraw() {
     playTotal = 0;
     houseTotal = 0;
 
-    playerStats(0);
+    playerStats(0, false);
     resetDeck();
     drawCard(true);
     drawCard(true);
@@ -333,8 +327,26 @@ function houseDraw() {
 // Initiates the game
 
 function gameStart() {
+    bank = 100;
+    bet = 0;
+    statTrack = [0, 0, 0, 0, 0];
+    console.log(statTrack);
+
+    document.getElementById('playHand').textContent = "";
+    document.getElementById('houseHand').textContent = "";
+    document.getElementById('playTotal').textContent = "-";
+    document.getElementById('houseTotal').textContent = "-";
+
+    for (let index = 0; index < 5; index++) {
+        playerStats(index, true);
+    }
+
+    playMessage(10);
     disablePlayBtn(false,false,false,true);
     changeBankText(bank,'-');
+
+    btnNewGame.classList.add('hidden');
 }
 
+btnNewGame.addEventListener('click',gameStart);
 gameStart();

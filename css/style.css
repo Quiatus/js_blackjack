@@ -65,6 +65,15 @@ body {
     position: relative;
 }
 
+.playarea__header button {
+    width: 200px;
+    font-size: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
 /* Header */
 
 .div__h1 {
@@ -81,7 +90,7 @@ body {
 
 .stats {
     color: var(--COLOR-WHITE);
-    border-bottom: var(--BORDER-DOUBLE);
+    border-bottom: var(--BORDER);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -136,7 +145,7 @@ body {
 
 .playerBank {
     color: var(--COLOR-WHITE);
-    border-top: var(--BORDER-DOUBLE);
+    border-top: var(--BORDER);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
