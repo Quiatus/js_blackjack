@@ -96,7 +96,8 @@ function playMessage(msgNum) {
         {color: "white", text: "STAND OFF!"}, // 7
         {color: "white", text: "Draw a card or stand!"}, // 8
         {color: "white", text: "Dealer's turn!"}, // 9
-        {color: "white", text: "Place your bet!"} // 10
+        {color: "white", text: "Place your bet!"}, // 10
+        {color: "red", text: "You can't surrender if the bank will be less than 5$!"} // 11
     ];
 
     result.classList.remove('white', 'green', 'red');
@@ -192,12 +193,17 @@ function playerWin() {
 // If player surrenders
 
 function playerSurrenders() {
-    bank += Math.ceil(bet / 2);
+    if (bank + Math.ceil(bet / 2) < 5) {
+        playMessage(11);
+    }
+    else {
+        bank += Math.ceil(bet / 2);
 
-    playerStats(4, false);
-    playMessage(5);
-    changeBankText(bank,0);
-    disablePlayBtn(false,false,false,true);
+        playerStats(4, false);
+        playMessage(5);
+        changeBankText(bank,0);
+        disablePlayBtn(false,false,false,true);
+    }
 }
 
 // If player and the house tie 
@@ -253,7 +259,7 @@ function placeBet() {
             playMessage(2);
             document.getElementById('betAmnt').value = bank;
         } else if (betAmnt < 0) {
-            document.getElementById('betAmnt').value = 0;
+            document.getElementById('betAmnt').value = "";
         } else if ((betAmnt >= 0) && (betAmnt < 5)) {
             playMessage(3);
             document.getElementById('betAmnt').value = 5;
